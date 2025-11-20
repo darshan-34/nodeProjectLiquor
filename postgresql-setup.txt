@@ -1,0 +1,37 @@
+# Initialize the database cluster
+sudo su - postgres -c "initdb --locale en_US.UTF-8 -D /var/lib/postgres/data"
+
+# Start and enable PostgreSQL service
+sudo systemctl enable postgresql.service
+sudo systemctl start postgresql.service
+
+
+# Switch to postgres user
+sudo -u postgres psql
+
+# In the psql prompt, create a database and user if needed
+CREATE DATABASE your_database_name;
+CREATE USER your_username WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE your_database_name TO your_username;
+
+# Exit psql
+\q
+
+# restoring backup from .backup file
+# If the backup is in custom format
+sudo -u postgres pg_restore -d your_database_name -v /path/to/your/file.backup
+
+# Connect to check if data was restored
+sudo -u postgres psql -d your_database_name
+
+# List tables to verify
+\dt
+
+# Check a few records from a table
+SELECT * FROM your_table_name LIMIT 5;
+
+# Exit
+\q
+
+
+
